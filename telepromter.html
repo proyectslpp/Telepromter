@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TelePrompt Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2ecc71;
+            --secondary-dark: #27ae60;
+            --danger-color: #e74c3c;
+            --danger-dark: #c0392b;
+            --dark-color: #34495e;
+            --light-color: #ecf0f1;
+            --gray-color: #95a5a6;
+            --dark-gray: #7f8c8d;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex-grow: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .app-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .app-title i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        h1 {
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 2.2rem;
+            margin: 0;
+        }
+        
+        .subtitle {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .setup-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .section-title i {
+            font-size: 1.2em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--dark-color);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius);
+            font-size: 16px;
+            resize: vertical;
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+        
+        textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+        
+        .controls-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .control-group {
+            background-color: rgba(236, 240, 241, 0.6);
+            padding: 15px;
+            border-radius: var(--radius);
+        }
+        
+        .control-group h3 {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+        
+        .speed-control {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .slider-value {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        input[type="range"] {
+            flex-grow: 1;
+            height: 8px;
+            border-radius: 10px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .font-size-btns {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .font-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .font-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .font-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .color-scheme-control {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .color-option.active {
+            border-color: var(--dark-color);
+            transform: scale(1.1);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.light {
+            background-color: #ffffff;
+            box-shadow: inset 0 0 0 1px #e0e0e0;
+        }
+        
+        .color-option.dark {
+            background-color: #222222;
+        }
+        
+        .color-option.blue {
+            background-color: #3498db;
+        }
+        
+        .color-option.green {
+            background-color: #2ecc71;
+        }
+        
+        .color-option i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.8rem;
+        }
+        
+        .color-option.light i {
+            color: #333;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--dark-color);
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: var(--danger-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-icon {
+            padding: 12px;
+            border-radius: 50%;
+        }
+        
+        .teleprompter-section {
+            display: none;
+            position: relative;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            background-color: #000;
+            border-radius: var(--radius);
+            overflow: hidden;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        #videoElement {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .text-scroll-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            height: 40%;
+            padding: 20px;
+            overflow: hidden;
+            border-bottom-left-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .scrolling-text {
+            color: #fff;
+            font-size: 26px;
+            line-height: 1.5;
+            text-align: center;
+            padding-top: 50px;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            height: 100%;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .scrolling-text::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .text-scroll-container.light {
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .text-scroll-container.light .scrolling-text {
+            color: #222;
+        }
+        
+        .text-scroll-container.blue {
+            background-color: rgba(52, 152, 219, 0.9);
+        }
+        
+        .text-scroll-container.green {
+            background-color: rgba(46, 204, 113, 0.9);
+        }
+        
+        .recording-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rec-indicator {
+            width: 15px;
+            height: 15px;
+            background-color: var(--danger-color);
+            border-radius: 50%;
+            display: none;
+            animation: blink 1.5s infinite;
+        }
+        
+        .rec-indicator.active {
+            display: block;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        .timer-display {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        
+        .teleprompter-controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .control-group-label {
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-gray);
+        }
+        
+        .preview-section {
+            display: none;
+        }
+        
+        .preview-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .video-preview-container {
+            width: 100%;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        #recordedVideo {
+            width: 100%;
+            border-radius: var(--radius);
+            background-color: #000;
+            max-height: 70vh;
+        }
+        
+        .download-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .mirror-video {
+            transform: scaleX(-1);
+        }
+        
+        .settings-floater {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .settings-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+        
+        .settings-panel {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            width: 250px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .settings-panel.active {
+            display: block;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .settings-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        .setting-item {
+            margin-bottom: 12px;
+        }
+        
+        .setting-item label {
+            font-size: 0.9rem;
+        }
+        
+        .countdown-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            border-radius: var(--radius);
+        }
+        
+        .countdown-number {
+            font-size: 8rem;
+            color: white;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .about-section {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: rgba(236, 240, 241, 0.6);
+            border-radius: var(--radius);
+        }
+        
+        .about-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .about-section ol {
+            padding-left: 20px;
+        }
+        
+        .about-section li {
+            margin-bottom: 5px;
+        }
+        
+        .keyboard-shortcuts {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px 15px;
+        }
+        
+        .key {
+            background-color: #f1f1f1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #ddd;
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            .controls-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .teleprompter-controls {
+                flex-direction: column;
+            }
+            
+            .scrolling-text {
+                font-size: 20px;
+            }
+            
+            .download-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="app-title">
+                <i class="fas fa-video"></i>
+                <h1>TelePrompt Pro</h1>
+            </div>
+            <p class="subtitle">Graba vídeos profesionales usando un teleprompter que no aparece en la grabación final</p>
+        </header>
+        
+        <div class="card setup-section" id="setupSection">
+            <div class="section-title">
+                <i class="fas fa-edit"></i>
+                <h2>Prepara tu guion</h2>
+            </div>
+            
+            <div class="form-group">
+                <label for="promptText">Escribe o pega tu texto para el teleprompter:</label>
+                <textarea id="promptText" placeholder="Escribe o pega aquí el texto que quieres que aparezca en el teleprompter...">Bienvenido a esta demostración del teleprompter profesional. Este texto se desplazará automáticamente mientras grabas tu video. 
+
+Puedes ajustar la velocidad, el tamaño del texto y el esquema de colores según tus preferencias.
+
+El texto solo te servirá como guía y no aparecerá en el video final. Así podrás grabar videos profesionales sin tener que memorizar todo el contenido.
+
+Puedes personalizar este texto como quieras, añadir puntos clave, recordatorios o el guion completo de tu presentación.</textarea>
+            </div>
+            
+            <div class="controls-container">
+                <div class="control-group">
+                    <h3>Velocidad de desplazamiento</h3>
+                    <div class="speed-control">
+                        <div class="slider-container">
+                            <span><i class="fas fa-tachometer-alt"></i></span>
+                            <input type="range" id="scrollSpeed" min="10" max="100" value="40">
+                            <span class="slider-value" id="speedValue">40</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>Tamaño del texto</h3>
+                    <div class="font-size-control">
+                        <span><i class="fas fa-font"></i></span>
+                        <div class="font-size-btns">
+                            <div class="font-btn" data-size="20px"><i class="fas fa-text-height fa-xs"></i></div>
+                            <div class="font-btn active" data-size="26px"><i class="fas fa-text-height"></i></div>
+                            <div class="font-btn" data-size="32px"><i class="fas fa-text-height fa-lg"></i></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>Esquema de colores</h3>
+                    <div class="color-scheme-control">
+                        <div class="color-option dark active" data-scheme="dark">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="color-option light" data-scheme="light"></div>
+                        <div class="color-option blue" data-scheme="blue"></div>
+                        <div class="color-option green" data-scheme="green"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h3><i class="fas fa-info-circle"></i> Cómo utilizar el teleprompter</h3>
+                <ol>
+                    <li>Escribe o pega tu texto guion en el área de texto</li>
+                    <li>Ajusta la velocidad de desplazamiento, tamaño del texto y esquema de colores</li>
+                    <li>Haz clic en "Iniciar Teleprompter" y concede permisos a la cámara</li>
+                    <li>Utiliza los controles para iniciar el desplazamiento del texto</li>
+                    <li>Cuando estés listo, haz clic en "Grabar" para comenzar la grabación</li>
+                    <li>Al terminar, haz clic en "Detener" para finalizar la grabación</li>
+                </ol>
+                
+                <h3 style="margin-top: 15px;"><i class="fas fa-keyboard"></i> Atajos de teclado</h3>
+                <div class="keyboard-shortcuts">
+                    <span class="key">Espacio</span> <span>Iniciar/Pausar desplazamiento</span>
+                    <span class="key">R</span> <span>Iniciar/Detener grabación</span>
+                    <span class="key">↑</span> <span>Aumentar velocidad</span>
+                    <span class="key">↓</span> <span>Disminuir velocidad</span>
+                    <span class="key">Home</span> <span>Reiniciar texto</span>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button id="startButton" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Iniciar Teleprompter
+                </button>
+            </div>
+        </div>
+        
+        <div class="card teleprompter-section" id="teleprompterSection">
+            <div class="section-title">
+                <i class="fas fa-video"></i>
+                <h2>Grabación con Teleprompter</h2>
+            </div>
+            
+            <div class="video-container">
+                <video id="videoElement" autoplay muted></video>
+                
+                <div class="text-scroll-container" id="textScrollContainer">
+                    <div class="scrolling-text" id="scrollingText"></div>
+                </div>
+                
+                <div class="recording-info">
+                    <div class="rec-indicator" id="recIndicator"></div>
+                    <div class="timer-display" id="timerDisplay">00:00</div>
+                </div>
+                
+                <div class="settings-floater">
+                    <div class="settings-btn" id="mirrorButton">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="settings-btn" id="settingsButton">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+                
+                <div class="settings-panel" id="settingsPanel">
+                    <div class="settings-header">
+                        <h3>Ajustes</h3>
+                        <button class="close-settings" id="closeSettings">&times;</button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="prompterSpeedAdjust">Velocidad:</label>
+                        <div class="slider-container">
+                            <input type="range" id="prompterSpeedAdjust" min="10" max="100" value="40">
+                            <span class="slider-value" id="prompterSpeedValue">40</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Tamaño del texto:</label>
+                        <div class="font-size-btns">
+                            <div class="font-btn" data-size="20px"><i class="fas fa-text-height fa-xs"></i></div>
+                            <div class="font-btn active" data-size="26px"><i class="fas fa-text-height"></i></div>
+                            <div class="font-btn" data-size="32px"><i class="fas fa-text-height fa-lg"></i></div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Esquema de colores:</label>
+                        <div class="color-scheme-control">
+                            <div class="color-option dark active" data-scheme="dark">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="color-option light" data-scheme="light"></div>
+                            <div class="color-option blue" data-scheme="blue"></div>
+                            <div class="color-option green" data-scheme="green"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="countdown-overlay hidden" id="countdownOverlay">
+                    <div class="countdown-number" id="countdownNumber">3</div>
+                </div>
+            </div>
+            
+            <div class="teleprompter-controls">
+                <div>
+                    <span class="control-group-label">Control de texto</span>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="startScrollButton" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Iniciar
+                        </button>
+                        <button id="pauseScrollButton" class="btn btn-secondary">
+                            <i class="fas fa-pause"></i> Pausar
+                        </button>
+                        <button id="restartScrollButton" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reiniciar
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <span class="control-group-label">Control de grabación</span>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="startRecordingButton" class="btn btn-success">
+                            <i class="fas fa-record-vinyl"></i> Grabar
+                        </button>
+                        <button id="stopRecordingButton" class="btn btn-danger hidden">
+                            <i class="fas fa-stop"></i> Detener
+                        </button>
+                    </div>
+                </div>
+                
+                <button id="backButton" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </button>
+            </div>
+        </div>
+        
+        <div class="card preview-section" id="previewSection">
+            <div class="section-title">
+                <i class="fas fa-film"></i>
+                <h2>Vista Previa del Video</h2>
+            </div>
+            
+            <div class="video-preview-container">
+                <video id="recordedVideo" controls></video>
+            </div>
+            
+            <div class="download-container">
+                <button id="downloadButton" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Descargar Video
+                </button>
+                <button id="newRecordingButton" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> Nueva Grabación
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>TelePrompt Pro - Herramienta profesional para crear videos con teleprompter</p>
+        </div>
+    </div>
+    
+    <script>
+        // Variables globales
+        let mediaRecorder;
+        let recordedChunks = [];
+        let scrollInterval;
+        let startTime;
+        let timerInterval;
+        let selectedColorScheme = 'dark';
+        let selectedFontSize = '26px';
+        let countdownInterval;
+        let isScrolling = false;
+        
+        // Elementos del DOM
+        const setupSection = document.getElementById('setupSection');
+        const teleprompterSection = document.getElementById('teleprompterSection');
+        const previewSection = document.getElementById('previewSection');
+        const promptText = document.getElementById('promptText');
+        const scrollingText = document.getElementById('scrollingText');
+        const videoElement = document.getElementById('videoElement');
+        const recordedVideo = document.getElementById('recordedVideo');
+        const scrollSpeed = document.getElementById('scrollSpeed');
+        const prompterSpeedAdjust = document.getElementById('prompterSpeedAdjust');
+        const speedValue = document.getElementById('speedValue');
+        const prompterSpeedValue = document.getElementById('prompterSpeedValue');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const recIndicator = document.getElementById('recIndicator');
+        const textScrollContainer = document.getElementById('textScrollContainer');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const settingsPanel = document.getElementById('settingsPanel');
+        
+        // Botones
+        const startButton = document.getElementById('startButton');
+        const startScrollButton = document.getElementById('startScrollButton');
+        const pauseScrollButton = document.getElementById('pauseScrollButton');
+        const restartScrollButton = document.getElementById('restartScrollButton');
+        const startRecordingButton = document.getElementById('startRecordingButton');
+        const stopRecordingButton = document.getElementById('stopRecordingButton');
+        const backButton = document.getElementById('backButton');
+        const downloadButton = document.getElementById('downloadButton');
+        const newRecordingButton = document.getElementById('newRecordingButton');
+        const mirrorButton = document.getElementById('mirrorButton');
+        const settingsButton = document.getElementById('settingsButton');
+        const closeSettings = document.getElementById('closeSettings');
+        
+        // Inicializar controles de la configuración
+        function initControls() {
+            // Actualizar el valor de la velocidad
+            scrollSpeed.addEventListener('input', () => {
+                const value = scrollSpeed.value;
+                speedValue.textContent = value;
+                prompterSpeedAdjust.value = value;
+                prompterSpeedValue.textContent = value;
+            });
+            
+            prompterSpeedAdjust.addEventListener('input', () => {
+                const value = prompterSpeedAdjust.value;
+                prompterSpeedValue.textContent = value;
+                scrollSpeed.value = value;
+                speedValue.textContent = value;
+                
+                // Si está en desplazamiento, actualizar la velocidad
+                if (isScrolling) {
+                    clearInterval(scrollInterval);
+                    startScroll();
+                }
+            });
+            
+            // Configuración del tamaño de fuente
+            document.querySelectorAll('.font-size-btns .font-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remover la clase activa de todos los botones
+                    document.querySelectorAll('.font-size-btns .font-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Añadir la clase activa al botón seleccionado
+                    btn.classList.add('active');
+                    
+                    // Actualizar el tamaño de fuente
+                    selectedFontSize = btn.dataset.size;
+                    scrollingText.style.fontSize = selectedFontSize;
+                });
+            });
+            
+            // Configuración del esquema de colores
+            document.querySelectorAll('.color-scheme-control .color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remover la clase activa de todas las opciones
+                    document.querySelectorAll('.color-scheme-control .color-option').forEach(o => {
+                        o.classList.remove('active');
+                        o.innerHTML = '';
+                    });
+                    
+                    // Añadir la clase activa a la opción seleccionada
+                    option.classList.add('active');
+                    option.innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    // Actualizar el esquema de colores
+                    selectedColorScheme = option.dataset.scheme;
+                    updateColorScheme();
+                });
+            });
+            
+            // Inicializar botones de ajustes
+            mirrorButton.addEventListener('click', () => {
+                videoElement.classList.toggle('mirror-video');
+            });
+            
+            settingsButton.addEventListener('click', () => {
+                settingsPanel.classList.toggle('active');
+            });
+            
+            closeSettings.addEventListener('click', () => {
+                settingsPanel.classList.remove('active');
+            });
+        }
+        
+        // Actualizar el esquema de colores
+        function updateColorScheme() {
+            // Remover todas las clases de esquema de colores
+            textScrollContainer.classList.remove('dark', 'light', 'blue', 'green');
+            
+            // Añadir la clase del esquema seleccionado
+            textScrollContainer.classList.add(selectedColorScheme);
+        }
+        
+        // Iniciar el teleprompter
+        startButton.addEventListener('click', () => {
+            // Copiar el texto al teleprompter
+            scrollingText.innerHTML = promptText.value.replace(/\n/g, '<br>');
+            scrollingText.style.fontSize = selectedFontSize;
+            
+            // Iniciar la cámara
+            startCamera();
+            
+            // Actualizar el esquema de colores
+            updateColorScheme();
+            
+            // Mostrar sección del teleprompter
+            setupSection.style.display = 'none';
+            teleprompterSection.style.display = 'block';
+        });
+        
+        // Iniciar la cámara
+        function startCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then((stream) => {
+                        videoElement.srcObject = stream;
+                        
+                        // Preparar el grabador de medios
+                        prepareMediaRecorder(stream);
+                    })
+                    .catch((error) => {
+                        console.error('Error al acceder a la cámara:', error);
+                        alert('No se pudo acceder a la cámara. Asegúrate de conceder permisos.');
+                    });
+            } else {
+                alert('Tu navegador no soporta la captura de medios.');
+            }
+        }
+        
+        // Preparar el grabador de medios
+        function prepareMediaRecorder(stream) {
+            const options = { mimeType: 'video/webm;codecs=vp9,opus' };
+            
+            try {
+                mediaRecorder = new MediaRecorder(stream, options);
+            } catch (e) {
+                console.error('Error al crear MediaRecorder:', e);
+                
+                try {
+                    // Intentar con otro formato
+                    mediaRecorder = new MediaRecorder(stream);
+                } catch (e) {
+                    console.error('Error al crear MediaRecorder sin opciones:', e);
+                    alert('Tu navegador no soporta la grabación de video.');
+                    return;
+                }
+            }
+            
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+            
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                recordedVideo.src = url;
+                
+                // Mostrar sección de vista previa
+                teleprompterSection.style.display = 'none';
+                previewSection.style.display = 'block';
+                
+                // Configurar el enlace de descarga
+                downloadButton.addEventListener('click', () => {
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'video-teleprompt-pro.webm';
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, 100);
+                });
+            };
+        }
+        
+        // Función para iniciar el desplazamiento del texto
+        function startScroll() {
+            const speed = 101 - prompterSpeedAdjust.value; // Invertir para que mayor valor = mayor velocidad
+            
+            // Limpiar intervalo anterior si existe
+            if (scrollInterval) {
+                clearInterval(scrollInterval);
+            }
+            
+            isScrolling = true;
+            
+            scrollInterval = setInterval(() => {
+                scrollingText.scrollTop += 1;
+                
+                // Si llegamos al final, detener el desplazamiento
+                if (scrollingText.scrollTop + scrollingText.clientHeight >= scrollingText.scrollHeight) {
+                    clearInterval(scrollInterval);
+                    isScrolling = false;
+                }
+            }, speed);
+        }
+        
+        // Función para pausar el desplazamiento
+        function pauseScroll() {
+            clearInterval(scrollInterval);
+            isScrolling = false;
+        }
+        
+        // Iniciar desplazamiento
+        startScrollButton.addEventListener('click', startScroll);
+        
+        // Pausar desplazamiento
+        pauseScrollButton.addEventListener('click', pauseScroll);
+        
+        // Reiniciar desplazamiento
+        restartScrollButton.addEventListener('click', () => {
+            scrollingText.scrollTop = 0;
+            startScroll();
+        });
+        
+        // Iniciar cuenta regresiva y luego grabación
+        startRecordingButton.addEventListener('click', () => {
+            // Mostrar cuenta regresiva
+            countdownOverlay.classList.remove('hidden');
+            let count = 3;
+            countdownNumber.textContent = count;
+            
+            countdownInterval = setInterval(() => {
+                count--;
+                
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownOverlay.classList.add('hidden');
+                    
+                    // Iniciar grabación
+                    startRecording();
+                }
+            }, 1000);
+        });
+        
+        // Función para iniciar grabación
+        function startRecording() {
+            recordedChunks = [];
+            mediaRecorder.start();
+            recIndicator.classList.add('active');
+            startRecordingButton.classList.add('hidden');
+            stopRecordingButton.classList.remove('hidden');
+            
+            // Iniciar temporizador
+            startTime = Date.now();
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Iniciar desplazamiento automáticamente si no está desplazándose
+            if (!isScrolling) {
+                startScroll();
+            }
+        }
+        
+        // Detener grabación
+        stopRecordingButton.addEventListener('click', () => {
+            mediaRecorder.stop();
+            recIndicator.classList.remove('active');
+            clearInterval(timerInterval);
+            pauseScroll();
+        });
+        
+        // Volver a la configuración
+        backButton.addEventListener('click', () => {
+            clearInterval(scrollInterval);
+            isScrolling = false;
+            
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            
+            if (videoElement.srcObject) {
+                const tracks = videoElement.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            
+            teleprompterSection.style.display = 'none';
+            setupSection.style.display = 'block';
+        });
+        
+        // Nueva grabación
+        newRecordingButton.addEventListener('click', () => {
+            previewSection.style.display = 'none';
+            setupSection.style.display = 'block';
+            stopRecordingButton.classList.add('hidden');
+            startRecordingButton.classList.remove('hidden');
+            timerDisplay.textContent = '00:00';
+        });
+        
+        // Actualizar el temporizador
+        function updateTimer() {
+            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+            const seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+        
+        // Atajos de teclado
+        document.addEventListener('keydown', (e) => {
+            // Solo procesar atajos cuando se está en la sección del teleprompter
+            if (teleprompterSection.style.display === 'block') {
+                switch (e.key) {
+                    case ' ': // Espacio para iniciar/pausar desplazamiento
+                        if (isScrolling) {
+                            pauseScroll();
+                        } else {
+                            startScroll();
+                        }
+                        break;
+                    case 'r': // R para iniciar/detener grabación
+                    case 'R':
+                        if (startRecordingButton.classList.contains('hidden')) {
+                            stopRecordingButton.click();
+                        } else {
+                            startRecordingButton.click();
+                        }
+                        break;
+                    case 'ArrowUp': // Flecha arriba para aumentar velocidad
+                        let newSpeedUp = parseInt(prompterSpeedAdjust.value) + 5;
+                        if (newSpeedUp > 100) newSpeedUp = 100;
+                        prompterSpeedAdjust.value = newSpeedUp;
+                        prompterSpeedValue.textContent = newSpeedUp;
+                        if (isScrolling) {
+                            clearInterval(scrollInterval);
+                            startScroll();
+                        }
+                        break;
+                    case 'ArrowDown': // Flecha abajo para disminuir velocidad
+                        let newSpeedDown = parseInt(prompterSpeedAdjust.value) - 5;
+                        if (newSpeedDown < 10) newSpeedDown = 10;
+                        prompterSpeedAdjust.value = newSpeedDown;
+                        prompterSpeedValue.textContent = newSpeedDown;
+                        if (isScrolling) {
+                            clearInterval(scrollInterval);
+                            startScroll();
+                        }
+                        break;
+                    case 'Home': // Home para reiniciar texto
+                        scrollingText.scrollTop = 0;
+                        if (isScrolling) {
+                            clearInterval(scrollInterval);
+                            startScroll();
+                        }
+                        break;
+                }
+            }
+        });
+        
+        // Inicializar controles al cargar la página
+        window.addEventListener('DOMContentLoaded', initControls);
+    </script>
+</body>
+</html>
